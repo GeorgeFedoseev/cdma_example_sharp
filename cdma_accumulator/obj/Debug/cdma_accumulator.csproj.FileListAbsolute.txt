@@ -1,0 +1,5 @@
+S:\Projects\cdma_sharp\cdma_accumulator\bin\Debug\cdma_accumulator.exe.config
+S:\Projects\cdma_sharp\cdma_accumulator\bin\Debug\cdma_accumulator.exe
+S:\Projects\cdma_sharp\cdma_accumulator\bin\Debug\cdma_accumulator.pdb
+S:\Projects\cdma_sharp\cdma_accumulator\obj\Debug\cdma_accumulator.exe
+S:\Projects\cdma_sharp\cdma_accumulator\obj\Debug\cdma_accumulator.pdb
