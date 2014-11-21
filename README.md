@@ -8,6 +8,6 @@ cdma_example_sharp
 <b>cdma_helpers.cs</b> - binary conversion functions, configuration and other<br>
 <b>cdma_sockets.cs</b> - <i>cdma_client</i> and <i>cdma_server</i><br>
 <br>
-<b>Used resources:</b>
-[CDMA](http://en.wikipedia.org/wiki/Code_division_multiple_access)
-[Walsh function](https://en.wikipedia.org/wiki/Walsh_function)
+<b>Used resources:</b><br>
+[CDMA](http://en.wikipedia.org/wiki/Code_division_multiple_access)<br>
+[Walsh function](https://en.wikipedia.org/wiki/Walsh_function)<br>
