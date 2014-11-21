@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cdma_bstation", "cdma_bstat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cdma_accumulator", "cdma_accumulator\cdma_accumulator.csproj", "{AF1638F4-21F4-4563-8945-9F55CBB2891E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F645D3EA-6E4F-41D9-AF24-3AD1030682D1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cdma_receiver", "cdma_receiver\cdma_receiver.csproj", "{BA803BD1-0774-45CD-8CF5-FBD838BEFA01}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +21,10 @@ Global
 		{AF1638F4-21F4-4563-8945-9F55CBB2891E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF1638F4-21F4-4563-8945-9F55CBB2891E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF1638F4-21F4-4563-8945-9F55CBB2891E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA803BD1-0774-45CD-8CF5-FBD838BEFA01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA803BD1-0774-45CD-8CF5-FBD838BEFA01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA803BD1-0774-45CD-8CF5-FBD838BEFA01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA803BD1-0774-45CD-8CF5-FBD838BEFA01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

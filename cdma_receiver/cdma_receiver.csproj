@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AF1638F4-21F4-4563-8945-9F55CBB2891E}</ProjectGuid>
+    <ProjectGuid>{BA803BD1-0774-45CD-8CF5-FBD838BEFA01}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>cdma_accumulator</RootNamespace>
-    <AssemblyName>cdma_accumulator</AssemblyName>
+    <RootNamespace>cdma_receiver</RootNamespace>
+    <AssemblyName>cdma_receiver</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -47,7 +47,7 @@
     <Compile Include="..\cdma_sockets.cs">
       <Link>cdma_sockets.cs</Link>
     </Compile>
-    <Compile Include="cdma_accumulator.cs" />
+    <Compile Include="cdma_receiver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

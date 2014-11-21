@@ -17,21 +17,51 @@ namespace cdma_bstation
         private List<Thread> threads = new List<Thread>();
         private string buffer = string.Empty;
 
-        long bufferMilliseconds = 1000;
-        double chipsPerBit = 4;
+        int[] walsh_func;        
 
         static void Main(string[] args)
         {
             cdma_bstation station = new cdma_bstation();
-            station.connnect("1");
-            station.send("Hello!");
 
-            station.start_listening();
+            // select walsh func
+            int[][] walsh_functions = { 
+                                          new int[]{1, 1, 1, 1},
+                                          new int[]{-1, 1, -1, 1},
+                                          new int[]{-1, -1, 1, 1},
+                                          new int[]{1, -1, -1, 1}
+                                      };
+
+            Console.WriteLine("Select Walsh func for bstation:");
+            for (int i = 0; i < walsh_functions.Length; i++)
+            {
+                cdma_helpers.printIntArray(walsh_functions[i], true, i);
+            }
+
+            while (true)
+            {
+                int selected_func_num;
+                if (int.TryParse(Console.ReadLine(), out selected_func_num))
+                {
+                    station.walsh_func = walsh_functions[selected_func_num];
+                    Console.WriteLine("Selected:");
+                    cdma_helpers.printIntArray(station.walsh_func);
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("please enter func number");
+                }
+            }
+
+            Console.WriteLine("Try connecting to server:");
+            station.connnect("bstation");
+            station.start_sending();
       
             while (!(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape)) {}            
+            
         }
 
-        void start_listening () {
+        void start_sending () {
 
             // main thread for timer
             Thread th = new Thread(delegate()
@@ -40,16 +70,32 @@ namespace cdma_bstation
                 timer.Start();
 
                 while (true){
-                    if (timer.ElapsedMilliseconds > 10000) {
+                    if (timer.ElapsedMilliseconds > cdma_helpers.bufferMilliseconds)
+                    {
                         // do stuff
-                        
+                        if (buffer.Length > 0) {
+                            int[] binary = cdma_helpers.ToBinary(cdma_helpers.ConvertToByteArray(buffer, Encoding.UTF8));
+                            
+                            int[] wave = cdma_helpers.ToWave(binary);
+                            int[] encodedWave = cdma_helpers.encodeWave(wave, walsh_func);
 
-                        string binary = ToBinary(ConvertToByteArray(buffer, Encoding.UTF8));
-                        Console.WriteLine(binary);
+                            if (cdma_helpers.DEBUG) {
+                                cdma_helpers.printIntArray(binary);
+                                Console.WriteLine("Wave: ");
+                                cdma_helpers.printIntArray(wave);
+                                Console.WriteLine("Encoded wave: ");
+                                cdma_helpers.printIntArray(encodedWave);
+                                Console.WriteLine("Send wave");
+                            }
+
+                            byte[] bytes = cdma_helpers.GetByteArrayFromIntArray(encodedWave);
+                            send(bytes);
+                        }
+                        
 
                         timer.Restart();
                         buffer = "";
-                        Console.WriteLine("Restart timer");
+                        //Console.WriteLine("Restart timer");
                     }
 
                     
@@ -74,31 +120,7 @@ namespace cdma_bstation
             threads.Add(th1);
             
         }
-
-        public static byte[] ConvertToByteArray(string str, Encoding encoding)
-        {
-            return encoding.GetBytes(str);
-        }
-
-        public static String ToBinary(Byte[] data)
-        {
-            return string.Join("", data.Select(byt => Convert.ToString(byt, 2).PadLeft(8, '0')));
-        }
-
-        public static List<int> ToWave(string binary) {
-            List<int> wave = new List<int>();
-            foreach (char c in binary){
-                if (c == '0')
-                {
-                    wave.Add(-1);
-                }
-                else {
-                    wave.Add(1);
-                }
-            }
-
-            return wave;
-        }
+        
        
     } // class
 } // namespace
