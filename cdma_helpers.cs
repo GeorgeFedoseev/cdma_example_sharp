@@ -11,6 +11,8 @@ static class cdma_helpers {
     public const bool DEBUG = false;
     public const long bufferMilliseconds = 1000;
 
+
+    // for sending through sockets
     public static byte[] GetByteArrayFromIntArray(int[] intArray)
     {
         byte[] data = new byte[intArray.Length * 4];
@@ -19,7 +21,7 @@ static class cdma_helpers {
         return data;
     }
 
-
+    // for sending through sockets
     public static int[] GetIntArrayFromByteArray(byte[] byteArray)
     {
         int[] intArray = new int[byteArray.Length / 4];
@@ -28,11 +30,13 @@ static class cdma_helpers {
         return intArray;
     }
 
+    // converts string to byte array with specified encoding 
     public static byte[] ConvertToByteArray(string str, Encoding encoding)
     {
         return encoding.GetBytes(str);
     }
 
+    // converts array of 01011... to byte array (each element from 8 bits)
     public static byte[] BitArrayToByteArray(int[] binary)
     {
         BitArray bits = new BitArray(binary.Select(x => x == 1 ? true : false).ToArray());
@@ -59,13 +63,15 @@ static class cdma_helpers {
     }
    
 
+    // converts 0101...(bits array) to string with specified encoding
     public static string ConvertToString(int[] binary, Encoding encoding)
     {
         byte[] bytes = BitArrayToByteArray(binary);
         return encoding.GetString(bytes);
     }
 
-    public static int[] ToBinary(Byte[] data)
+    // converts byte array to int array of bits
+    public static int[] ToBinary(byte[] data)
     {
         if (data.Length > 0)
         {
@@ -84,6 +90,7 @@ static class cdma_helpers {
         }
     }
 
+    // checks if int array contains only 0 values
     public static bool zeroArray(int[] array) {
         foreach (int v in array) {
             if (v != 0) return false;
@@ -92,6 +99,7 @@ static class cdma_helpers {
         return true;
     }
 
+    // converts bits 01011.. to signal -1 1 -1 1 1
     public static int[] ToWave(int[] binary)
     {
         List<int> wave = new List<int>();
@@ -110,6 +118,8 @@ static class cdma_helpers {
         return wave.ToArray();
     }
 
+
+    // converts signal to bits
     public static int[] waveToBinary(int[] wave)
     {
         List<int> binary = new List<int>();
@@ -135,6 +145,7 @@ static class cdma_helpers {
         
     }
 
+    // encodes wave using walsh code
     public static int[] encodeWave(int[] wave, int[] code) { 
         int[] result_wave = new int[wave.Length*code.Length];
 
@@ -147,6 +158,7 @@ static class cdma_helpers {
         return result_wave;
     }
 
+    // decodes wave using walsh code
     public static int[] decodeWave(int[] wave, int[] code)
     {
         int[] result_wave = new int[wave.Length/code.Length];
@@ -167,6 +179,7 @@ static class cdma_helpers {
         return result_wave;
     }
 
+    // prints formatted array of ints 
     public static void printIntArray(int[] array, bool withNumbers = false, int number = 0)
     {
         List<string> vals = new List<string>();

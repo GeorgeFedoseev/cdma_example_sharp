@@ -35,7 +35,9 @@ namespace cdma_receiver
             while (true)
             {
                 int selected_func_num;
-                if (int.TryParse(Console.ReadLine(), out selected_func_num))
+                if (int.TryParse(Console.ReadLine(), out selected_func_num) 
+                    && selected_func_num >= 0 
+                    && selected_func_num < walsh_functions.Length)
                 {                    
                     receiver.walsh_func = walsh_functions[selected_func_num];
                     Console.WriteLine("Selected:");
@@ -44,14 +46,18 @@ namespace cdma_receiver
                 }
                 else
                 {
-                    Console.WriteLine("please enter func number");
+                    Console.WriteLine("Please enter func number");
                 }
-            }            
+            }    
+        
+            // function selected, we'r ready to receive
 
             while (!(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape)) { }
            
         } // main
 
+
+        // on wave receive
         public override void receive(byte[] bytes)
         {
             if (bytes.Length > 0)

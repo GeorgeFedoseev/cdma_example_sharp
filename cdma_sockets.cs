@@ -39,7 +39,7 @@ namespace cdma_sockets
                 Console.WriteLine("connected");
             }
             catch {
-                Console.WriteLine("failed to connect to server");
+                Console.WriteLine("Failed to connect to server");
             }
         }
 
@@ -54,8 +54,6 @@ namespace cdma_sockets
                         var lengthBytes = new byte[4];
                         client.Receive(lengthBytes);
                         int messageLength = BitConverter.ToInt32(lengthBytes, 0);
-
-                        //Console.WriteLine("Message length: {0}", messageLength);
 
                         byte[] bytes = new byte[messageLength];                        
                         client.Receive(bytes);
@@ -80,7 +78,7 @@ namespace cdma_sockets
 
         public virtual void receive(string message)
         {
-            //Console.WriteLine("Received message: {0}", message);
+            
         }
 
         public void send(byte[] bytes)
@@ -170,7 +168,7 @@ namespace cdma_sockets
                         var lengthBytes = new byte[4];
                         r_client.Receive(lengthBytes);
                         int messageLength = BitConverter.ToInt32(lengthBytes, 0);
-                        //Console.WriteLine("Message length: {0}", messageLength);
+                        Console.WriteLine("Message length: {0}", messageLength);
 
                         byte[] bytes = new byte[messageLength];                        
                         r_client.Receive(bytes);
@@ -194,7 +192,7 @@ namespace cdma_sockets
 
         public virtual void receive(Socket r_client, string message)
         {
-            //Console.WriteLine("Received message: {0}", message);
+         
         }
 
         public void send_to_all(byte[] bytes) {

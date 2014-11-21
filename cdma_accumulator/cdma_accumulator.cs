@@ -30,9 +30,7 @@ namespace cdma_accumulator
         public override void receive(Socket r_client, byte[] bytes)
         {
             if (bytes.Length > 0) {
-                int[] wave = cdma_helpers.GetIntArrayFromByteArray(bytes);
-                //Console.WriteLine("Received wave: ");
-                //cdma_helpers.printIntArray(wave);
+                int[] wave = cdma_helpers.GetIntArrayFromByteArray(bytes);                
                 wavesBuffer.Add(wave);
             }
             
@@ -47,6 +45,7 @@ namespace cdma_accumulator
                 {
                     if (timer.ElapsedMilliseconds > cdma_helpers.bufferMilliseconds)
                     {
+                        // time to sum waves and send them out
                         if (wavesBuffer.Count > 0) {
                             int[] result_wave = sum_waves(wavesBuffer);
                             Console.WriteLine("Result wave: ");
@@ -66,7 +65,7 @@ namespace cdma_accumulator
 
 
         public int[] sum_waves(List<int[]> waves) {
-            // calc max length
+            // calc max length of given waves to create result_wave with right length
             int maxWaveLength = 0;
             foreach (int[] w in waves) {
                 if (w.Length > maxWaveLength) {
