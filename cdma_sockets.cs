@@ -35,7 +35,7 @@ namespace cdma_sockets
                 client_running = true;
                 client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 client.Connect(ip, port);
-                start_receiving();
+                //start_receiving();
                 Console.WriteLine("connected");
             }
             catch {
@@ -43,28 +43,31 @@ namespace cdma_sockets
             }
         }
 
-        void start_receiving()
+        public void start_receiving()
         {
             Thread th = new Thread(delegate()
             {
                 while (client_running)
-                {
-                    try
-                    {
-                        var lengthBytes = new byte[4];
-                        client.Receive(lengthBytes);
-                        int messageLength = BitConverter.ToInt32(lengthBytes, 0);
+                {                    
+                    var lengthBytes = new byte[8];
+                    
+                    client.Receive(lengthBytes);
+                    
+                    long messageLength = BitConverter.ToInt64(lengthBytes, 0);
 
-                        byte[] bytes = new byte[messageLength];                        
-                        client.Receive(bytes);
-                        if (bytes.Length != 0)
-                        {
-                            string msg = Encoding.UTF8.GetString(bytes);
-                            receive(bytes);
-                            receive(msg);                            
-                        }
+                    if (messageLength < 0 || messageLength > 10000)
+                        continue;
+                    
+
+                    byte[] bytes = new byte[messageLength];                        
+                    client.Receive(bytes);
+                    if (bytes.Length != 0)
+                    {
+                        string msg = Encoding.UTF8.GetString(bytes);
+                        receive(bytes);
+                        receive(msg);                            
                     }
-                    catch { }
+                    
                 }
             });
             th.Start();
@@ -91,7 +94,7 @@ namespace cdma_sockets
 
         public void send(string msg)
         {           
-            byte[] bytes = new byte[1024];
+            byte[] bytes;
             bytes = Encoding.UTF8.GetBytes(msg);
             send(bytes);            
         }
@@ -165,9 +168,9 @@ namespace cdma_sockets
                     try
                     {
 
-                        var lengthBytes = new byte[4];
+                        var lengthBytes = new byte[8];
                         r_client.Receive(lengthBytes);
-                        int messageLength = BitConverter.ToInt32(lengthBytes, 0);
+                        long messageLength = BitConverter.ToInt64(lengthBytes, 0);
                         Console.WriteLine("Message length: {0}", messageLength);
 
                         byte[] bytes = new byte[messageLength];                        
@@ -224,7 +227,7 @@ namespace cdma_sockets
 
         public void send(Socket c_client, string msg)
         {            
-            byte[] bytes = new byte[1024];
+            byte[] bytes;
             bytes = Encoding.UTF8.GetBytes(msg);
             send(c_client, bytes);            
         }

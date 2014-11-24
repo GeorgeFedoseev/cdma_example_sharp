@@ -117,6 +117,7 @@ namespace cdma_bstation
                     string key = Console.ReadKey(true).KeyChar.ToString();
                     if(key != ""){
                        buffer = string.Concat(buffer, key);
+                       buffer = buffer.Replace(((char)13).ToString(), Environment.NewLine);
                        Console.WriteLine(buffer);                   
                     }                    
                 }

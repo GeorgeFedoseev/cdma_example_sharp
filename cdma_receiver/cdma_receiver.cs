@@ -18,6 +18,7 @@ namespace cdma_receiver
         {
             cdma_receiver receiver = new cdma_receiver();
             receiver.connnect("receiver1");
+            receiver.start_receiving();
 
             // select walsh func
             int[][] walsh_functions = { 
