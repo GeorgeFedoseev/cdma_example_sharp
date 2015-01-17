@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +9,13 @@ using System.Threading;
 
 using System.Diagnostics;
 
-using cdma_sockets;
+using cdma_sockets_async;
+
+
 
 namespace cdma_bstation
 {
-    class cdma_bstation : cdma_client
+    class cdma_bstation : cdma_client_async
     {
         private List<Thread> threads = new List<Thread>();
         private string buffer = string.Empty;
@@ -59,8 +62,9 @@ namespace cdma_bstation
 
             // connect to accumulator
             Console.WriteLine("Try connecting to server");
-            station.connnect("bstation");
-            
+            station.Connect();
+
+
             // start sending strings from console
             station.start_sending();
       
@@ -81,12 +85,18 @@ namespace cdma_bstation
                     {                        
                         // do stuff
                         if (buffer.Length > 0) {
-                            int[] binary = cdma_helpers.ToBinary(cdma_helpers.ConvertToByteArray(buffer, Encoding.UTF8));
-                            
+                            int maxSendSize = 30;
+                            string buffer_part = buffer.Substring(0, maxSendSize<=buffer.Length?maxSendSize:buffer.Length);
+                            buffer = buffer.Substring(buffer_part.Length, buffer.Length-buffer_part.Length);
+
+                            Console.WriteLine("SENDING: {0}", buffer_part);
+                            int[] binary = cdma_helpers.ToBinary(cdma_helpers.ConvertToByteArray(buffer_part, Encoding.UTF8));
+
                             int[] wave = cdma_helpers.ToWave(binary);
                             int[] encodedWave = cdma_helpers.encodeWave(wave, walsh_func);
 
-                            if (cdma_helpers.DEBUG) {
+                            if (cdma_helpers.DEBUG)
+                            {
                                 cdma_helpers.printIntArray(binary);
                                 Console.WriteLine("Wave: ");
                                 cdma_helpers.printIntArray(wave);
@@ -95,12 +105,26 @@ namespace cdma_bstation
                                 Console.WriteLine("Send wave");
                             }
 
-                            byte[] bytes = cdma_helpers.GetByteArrayFromIntArray(encodedWave);
-                            send(bytes);
-                        }                        
+                            string waveStr = cdma_helpers.GetStringFromIntArray(encodedWave);
+                            send(waveStr);
 
-                        timer.Restart();
-                        buffer = "";                        
+                            /*int[] Dwave = cdma_helpers.GetIntArrayFromString(waveStr);
+                            int[] Ddecoded_wave = cdma_helpers.decodeWave(Dwave, walsh_func);
+                            int[] Dbinary = cdma_helpers.waveToBinary(Ddecoded_wave);
+
+
+
+                            if (Dbinary.Length > 0)
+                            {
+                                string message = cdma_helpers.ConvertToString(Dbinary, Encoding.UTF8);
+                                Console.WriteLine("SENT: {0}", message);
+                            }*/
+
+                            //buffer = "";
+                            
+                        }                       
+
+                        timer.Restart();                                             
                     }
 
                     
@@ -112,14 +136,19 @@ namespace cdma_bstation
 
             // thread for reading keys from console
             Thread th1 = new Thread(delegate()
-            {                
+            {
+                
                 while (true){
-                    string key = Console.ReadKey(true).KeyChar.ToString();
-                    if(key != ""){
-                       buffer = string.Concat(buffer, key);
-                       buffer = buffer.Replace(((char)13).ToString(), Environment.NewLine);
-                       Console.WriteLine(buffer);                   
-                    }                    
+                   
+                    //string key = Console.ReadKey(true).KeyChar.ToString();
+                    string line = Console.ReadLine();
+                    if (line != "")
+                    {
+                        buffer = string.Concat(buffer, line);
+                        buffer = buffer.Replace(((char)13).ToString(), Environment.NewLine);
+                        Console.WriteLine(buffer);
+                    }
+                    
                 }
             });
             th1.Start();

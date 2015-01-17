@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cdma_bstation", "cdma_bstation\cdma_bstation.csproj", "{12A7C6CC-D247-4743-B161-A9800DFA58EF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BA803BD1-0774-45CD-8CF5-FBD838BEFA01} = {BA803BD1-0774-45CD-8CF5-FBD838BEFA01}
+		{AF1638F4-21F4-4563-8945-9F55CBB2891E} = {AF1638F4-21F4-4563-8945-9F55CBB2891E}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cdma_accumulator", "cdma_accumulator\cdma_accumulator.csproj", "{AF1638F4-21F4-4563-8945-9F55CBB2891E}"
 EndProject

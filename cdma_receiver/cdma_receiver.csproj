@@ -47,6 +47,9 @@
     <Compile Include="..\cdma_sockets.cs">
       <Link>cdma_sockets.cs</Link>
     </Compile>
+    <Compile Include="..\cdma_sockets_async.cs">
+      <Link>cdma_sockets_async.cs</Link>
+    </Compile>
     <Compile Include="cdma_receiver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

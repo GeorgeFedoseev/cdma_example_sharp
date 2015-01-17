@@ -9,7 +9,29 @@ using System.Linq;
 static class cdma_helpers {
 
     public const bool DEBUG = false;
-    public const long bufferMilliseconds = 1000;
+    public const long bufferMilliseconds = 300;
+
+
+
+    public static string GetStringFromIntArray(int[] intArray) {
+        return string.Join(",", intArray);
+    }
+
+    public static int[] GetIntArrayFromString(string myString)
+    {
+        List<int> ints = new List<int>();
+        string[] strings = myString.Split(',');
+
+        foreach (string s in strings)
+        {
+            int i;
+            if (int.TryParse(s.Trim(), out i))
+            {
+                ints.Add(i);
+            }
+        }
+        return ints.ToArray();
+    }
 
 
     // for sending through sockets
@@ -25,8 +47,10 @@ static class cdma_helpers {
     public static int[] GetIntArrayFromByteArray(byte[] byteArray)
     {
         int[] intArray = new int[byteArray.Length / 4];
-        for (int i = 0; i < byteArray.Length; i += 4)
-            intArray[i / 4] = BitConverter.ToInt32(byteArray, i);
+        if (byteArray.Length % 4 == 0) {
+            for (int i = 0; i < byteArray.Length; i += 4)
+                intArray[i / 4] = BitConverter.ToInt32(byteArray, i);
+        }
         return intArray;
     }
 
