@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -9,11 +10,20 @@ using System.Linq;
 static class cdma_helpers {
 
     public const bool DEBUG = false;
-    public const long bufferMilliseconds = 300;
+    public const long sumWavesDelay = 1;
+    public const long askForNewMessagesDelay = 1;
+    public const long messagesSendDelay = 1;
 
 
+    public static string GetRandomString()
+    {
+        string path = Path.GetRandomFileName();
+        path = path.Replace(".", ""); // Remove period.
+        return path;
+    }
 
-    public static string GetStringFromIntArray(int[] intArray) {
+    public static string GetStringFromIntArray(int[] intArray)
+    {
         return string.Join(",", intArray);
     }
 
@@ -33,7 +43,6 @@ static class cdma_helpers {
         return ints.ToArray();
     }
 
-
     // for sending through sockets
     public static byte[] GetByteArrayFromIntArray(int[] intArray)
     {
@@ -47,10 +56,8 @@ static class cdma_helpers {
     public static int[] GetIntArrayFromByteArray(byte[] byteArray)
     {
         int[] intArray = new int[byteArray.Length / 4];
-        if (byteArray.Length % 4 == 0) {
-            for (int i = 0; i < byteArray.Length; i += 4)
-                intArray[i / 4] = BitConverter.ToInt32(byteArray, i);
-        }
+        for (int i = 0; i < byteArray.Length; i += 4)
+            intArray[i / 4] = BitConverter.ToInt32(byteArray, i);
         return intArray;
     }
 

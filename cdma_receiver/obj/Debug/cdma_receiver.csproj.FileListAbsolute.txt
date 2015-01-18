@@ -4,3 +4,9 @@ S:\Projects\cdma_example_sharp\cdma_receiver\bin\Debug\cdma_receiver.pdb
 S:\Projects\cdma_example_sharp\cdma_receiver\obj\Debug\cdma_receiver.exe
 S:\Projects\cdma_example_sharp\cdma_receiver\obj\Debug\cdma_receiver.pdb
 S:\Projects\cdma_example_sharp\cdma_receiver\obj\Debug\cdma_receiver.csprojResolveAssemblyReference.cache
+S:\Projects\cdma_example\cdma_receiver\bin\Debug\cdma_receiver.exe.config
+S:\Projects\cdma_example\cdma_receiver\obj\Debug\cdma_receiver.exe
+S:\Projects\cdma_example\cdma_receiver\obj\Debug\cdma_receiver.pdb
+S:\Projects\cdma_example\cdma_receiver\bin\Debug\cdma_receiver.exe
+S:\Projects\cdma_example\cdma_receiver\bin\Debug\cdma_receiver.pdb
+S:\Projects\cdma_example\cdma_receiver\obj\Debug\cdma_receiver.csprojResolveAssemblyReference.cache

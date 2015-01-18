@@ -4,20 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using cdma_sockets_async;
+using cdma_sockets;
 
 
 namespace cdma_receiver
 {
-    class cdma_receiver : cdma_client_async
+    class cdma_receiver : cdma_client
     {
 
         int[] walsh_func;
 
         static void Main(string[] args)
         {
-            cdma_receiver receiver = new cdma_receiver();
-            receiver.Connect();            
+            cdma_receiver receiver = new cdma_receiver();            
+            receiver.startReceiving();
 
             // select walsh func
             int[][] walsh_functions = { 
@@ -58,11 +58,11 @@ namespace cdma_receiver
 
 
         // on wave receive
-        public override void receive(string waveStr)
+        public override void receive(string msg)
         {
-            if (walsh_func != null && waveStr.Length > 0)
+            if (msg.Length > 0 && walsh_func != null)
             {
-                int[] wave = cdma_helpers.GetIntArrayFromString(waveStr);
+                int[] wave = cdma_helpers.GetIntArrayFromString(msg);
                 int[] decoded_wave = cdma_helpers.decodeWave(wave, walsh_func);
                 int[] binary = cdma_helpers.waveToBinary(decoded_wave);
 
@@ -78,7 +78,7 @@ namespace cdma_receiver
                 
                 if (binary.Length > 0) {
                     string message = cdma_helpers.ConvertToString(binary, Encoding.UTF8);
-                    Console.Write(message);                    
+                    Console.Write(message);
                 }
             }
         }

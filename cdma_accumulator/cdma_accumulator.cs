@@ -7,40 +7,23 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 
-
+using cdma_sockets;
 using System.Threading;
 using System.Diagnostics;
 
-using cdma_sockets_async;
+
 
 namespace cdma_accumulator
 {
-    class cdma_accumulator : cdma_server_async
+    class cdma_accumulator : cdma_server 
     {
-        private List<Thread> threads = new List<Thread>();
-        List<int[]> wavesBuffer = new List<int[]>();
+        private List<Thread> threads = new List<Thread>();              
 
         static void Main(string[] args)
         {
             cdma_accumulator accumulator = new cdma_accumulator();
-            accumulator.StartServer();
-
+            accumulator.startServer();
             accumulator.start_accumulating();
-        }
-
-        public override void receive(Socket client, string msg)
-        {
-            //Console.WriteLine("Received: {0}", msg);
-            int[] wave = cdma_helpers.GetIntArrayFromString(msg);            
-            int[] Ddecoded_wave = cdma_helpers.decodeWave(wave, new int[] { -1, 1, -1, 1 });
-            int[] Dbinary = cdma_helpers.waveToBinary(Ddecoded_wave);
-
-            if (Dbinary.Length > 0)
-            {
-                string message = cdma_helpers.ConvertToString(Dbinary, Encoding.UTF8);
-                Console.WriteLine("RECEIVED: {0}", message);
-            }
-            wavesBuffer.Add(wave);
         }
 
         public void start_accumulating () {
@@ -49,58 +32,50 @@ namespace cdma_accumulator
                 timer.Start();
 
                 while (true)
-                {                    
-                    if (timer.ElapsedMilliseconds > cdma_helpers.bufferMilliseconds)
-                    {                                            
-                        // time to sum waves and send them out
-                        if (wavesBuffer.Count > 0)
-                        {
-                            sumDone.Reset();
+                {
+                    if (timer.ElapsedMilliseconds > cdma_helpers.sumWavesDelay)
+                    {
+                        List<int[]> wavesBuffer = new List<int[]>();
 
-                            int[] result_wave = sum_waves(wavesBuffer);
-                            
+                        Dictionary<string, List<string>> modifiedIncomingMessages = new Dictionary<string, List<string>>(incomingMessages);
+                        foreach (var clientMessagesDic in incomingMessages) {
+                            var clientMessages = clientMessagesDic.Value;
+                            if (clientMessages.Count > 0) {
+                                string message = clientMessages[0];
+                                clientMessages.RemoveAt(0);
+                                modifiedIncomingMessages[clientMessagesDic.Key] = clientMessages;
 
-                            //Console.WriteLine("Result wave: ");
-                            //cdma_helpers.printIntArray(result_wave);
-                            string waveStr = cdma_helpers.GetStringFromIntArray(result_wave);                            
-                            sendToAll(waveStr);
-
-                            int[] Dwave = cdma_helpers.GetIntArrayFromString(waveStr);
-                            int[] Ddecoded_wave = cdma_helpers.decodeWave(Dwave, new int[] { -1, 1, -1, 1 });
-                            int[] Dbinary = cdma_helpers.waveToBinary(Ddecoded_wave);
-
-                            if (Dbinary.Length > 0)
-                            {
-                                string message = cdma_helpers.ConvertToString(Dbinary, Encoding.UTF8);
-                                Console.WriteLine("SENT: {0}", message);
+                                int[] wave = cdma_helpers.GetIntArrayFromString(message);
+                                wavesBuffer.Add(wave);
                             }
-
-                            wavesBuffer.Clear();
-                            // allow to receive from all clients
-                            foreach (StateObject state in clients)
-                            {
-                                state.receiveDone.Set();
-                            }
-
-                            sumDone.Set();
                         }
 
-                        timer.Restart();
+                        incomingMessages = modifiedIncomingMessages;
+
+                        if (wavesBuffer.Count > 0) {
+                            int[] result_wave = sum_waves(wavesBuffer);
+
+                            if (result_wave.Length > 0)
+                            {
+                                Console.WriteLine("Result wave: ");
+                                cdma_helpers.printIntArray(result_wave);
+                                sendToAll(cdma_helpers.GetStringFromIntArray(result_wave));
+                            }
+                        }
+                        
+                        
+
+                        timer.Restart();                        
                     }
-
-
-                    
                 }
             });
 
-            th.Name = "Accumulator Sum Thread";
             th.Start();
             threads.Add(th);
         }
 
 
         public int[] sum_waves(List<int[]> waves) {
-            Console.WriteLine("Waves number count: {0}", waves.Count);
             // calc max length of given waves to create result_wave with right length
             int maxWaveLength = 0;
             foreach (int[] w in waves) {

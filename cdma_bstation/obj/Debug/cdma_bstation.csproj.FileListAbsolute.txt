@@ -10,3 +10,9 @@ s:\Projects\cdma_example_sharp\cdma_bstation\obj\Debug\cdma_bstation.pdb
 s:\Projects\cdma_example_sharp\cdma_bstation\bin\Debug\cdma_bstation.exe
 s:\Projects\cdma_example_sharp\cdma_bstation\bin\Debug\cdma_bstation.pdb
 s:\Projects\cdma_example_sharp\cdma_bstation\obj\Debug\cdma_bstation.csprojResolveAssemblyReference.cache
+S:\Projects\cdma_example\cdma_bstation\bin\Debug\cdma_bstation.exe.config
+S:\Projects\cdma_example\cdma_bstation\obj\Debug\cdma_bstation.exe
+S:\Projects\cdma_example\cdma_bstation\obj\Debug\cdma_bstation.pdb
+S:\Projects\cdma_example\cdma_bstation\bin\Debug\cdma_bstation.exe
+S:\Projects\cdma_example\cdma_bstation\bin\Debug\cdma_bstation.pdb
+S:\Projects\cdma_example\cdma_bstation\obj\Debug\cdma_bstation.csprojResolveAssemblyReference.cache
