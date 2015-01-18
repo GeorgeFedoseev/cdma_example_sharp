@@ -1,6 +1,7 @@
 cdma_example_sharp
 ==================
 
+[exe файлы] (https://github.com/TrueGuy/cdma_example_sharp/raw/master/cdma_bin.zip) <br>
 
 <b>cdma_bstation.cs</b> (derived from cdma_client) - encodes data with CDMA algorithm and sends to cdma_accumulator <br>
 <b>cdma_accumulator.cs</b> (derived from cdma_server) - gets data from cdma_bstation's and sums them, then sends summed data to cdma_receivers<br>
